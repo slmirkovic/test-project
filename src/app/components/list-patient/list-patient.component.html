@@ -1,0 +1,44 @@
+<mat-card class="page">
+    <mat-card-title>
+        Patient list
+    </mat-card-title>
+    <mat-card-content>
+<mat-table [dataSource]="data">
+    <ng-container  matColumnDef="patientName">
+        <mat-header-cell *matHeaderCellDef>Patient name</mat-header-cell>
+        <mat-cell class="table-cell" *matCellDef="let patient" (click)="openPatientDialog(patient)">{{patient.patientName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="registrationDate">
+        <mat-header-cell *matHeaderCellDef>Registration date</mat-header-cell>
+        <mat-cell class="table-cell" *matCellDef="let patient" (click)="openPatientDialog(patient)">{{patient.registrationDate | date:'mediumDate'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="doctorName">
+        <mat-header-cell *matHeaderCellDef>Doctor</mat-header-cell>
+        <mat-cell class="table-cell" *matCellDef="let patient" (click)="openPatientDialog(patient)">{{patient.doctorName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="homeAddress">
+        <mat-header-cell *matHeaderCellDef>Home address</mat-header-cell>
+        <mat-cell *matCellDef="let patient">
+            <div>
+                {{patient.homeAddress.phone}}<br>
+                <a href="mailto:{{patient.homeAddress.mail}}">{{patient.homeAddress.email}}</a>
+                  
+                 <br>
+                   {{patient.homeAddress.street}}, {{patient.homeAddress.city}}, {{patient.homeAddress.zipcode}}, {{patient.homeAddress.country}}
+            </div>
+        </mat-cell>       
+         
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: tableColumns" ></mat-row>
+    
+    
+</mat-table>
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+    </mat-card>

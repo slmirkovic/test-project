@@ -1,0 +1,209 @@
+<mat-card class="page">
+    <mat-card-title>
+        Patient data
+    </mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="patientForm">
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>First name:</mat-label>
+                <input matInput class="form-control" formControlName="firstName" type="text">
+                <span
+                    *ngIf="patientForm.controls['firstName'].invalid && (patientForm.controls['firstName'].dirty || patientForm.controls['firstName'].touched)"
+                    class="alert alert-danger">
+                    <span *ngIf="patientForm.controls['firstName'].errors.required">
+                        First name is required.
+                    </span>
+                </span>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Last name:</mat-label>
+                <input matInput class="form-control" formControlName="lastName" type="text">
+                <span
+                    *ngIf="patientForm.controls['lastName'].invalid && (patientForm.controls['lastName'].dirty || patientForm.controls['lastName'].touched)"
+                    class="alert alert-danger">
+                    <span *ngIf="patientForm.controls['lastName'].errors.required">
+                        Last name is required.
+                    </span>
+                </span>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill" (click)="picker.open()">
+                <mat-label>Birth date</mat-label>
+                <input formControlName="birthDate" mat-input matInput [max]="maxDate" (focus)="picker.open()"
+                    [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <span
+                    *ngIf="patientForm.controls['birthDate'].invalid && (patientForm.controls['birthDate'].dirty || patientForm.controls['birthDate'].touched)"
+                    class="alert alert-danger">
+                    <span *ngIf="patientForm.controls['birthDate'].errors.required">
+                        Birth date is required.
+                    </span>
+                </span>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>VAT Code:</mat-label>
+                <input matInput class="form-control" formControlName="vatCode" type="text">
+                <span
+                    *ngIf="patientForm.controls['vatCode'].invalid && (patientForm.controls['vatCode'].dirty || patientForm.controls['vatCode'].touched)"
+                    class="alert alert-danger">
+                    <span *ngIf="patientForm.controls['vatCode'].errors.required">
+                        VAT Code is required.
+                    </span>
+                </span>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Email:</mat-label>
+                <input matInput class="form-control" formControlName="email" type="text">
+                <span
+                    *ngIf="patientForm.controls['email'].invalid && (patientForm.controls['email'].dirty || patientForm.controls['email'].touched)"
+                    class="alert alert-danger">
+                    <span *ngIf="patientForm.controls['email'].errors.required">
+                        Email address is required.
+                    </span>
+                    <span *ngIf="patientForm.controls['email'].errors.email">
+                        Email address is invalid.
+                    </span>
+                </span>
+            </mat-form-field>
+
+            <mat-form-field class="full-width " appearance="fill">
+                <mat-label>Doctor</mat-label>
+                <input type="text" placeholder="Pick one" aria-label="Doctor" matInput
+                    [formControl]="doctorSearchControl" [matAutocomplete]="auto">
+                <mat-autocomplete (optionSelected)="doctorSelected($event)" #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredDoctors | async" [value]="option">
+                        {{ option }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            
+            <form [formGroup]="homeAddressForm">
+                <mat-label>Home address:</mat-label>
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Phone:</mat-label>
+                    <input matInput class="form-control" (focus)="addNumberPrefix()" formControlName="phone"
+                        type="text">
+                    <span
+                        *ngIf="homeAddressForm.controls['phone'].invalid && (homeAddressForm.controls['phone'].dirty || homeAddressForm.controls['phone'].touched)"
+                        class="alert alert-danger">
+                        <span *ngIf="homeAddressForm.controls['phone'].errors.required">
+                            Phone number is required.
+                        </span>
+                        <span *ngIf="homeAddressForm.controls['phone'].errors.phone">
+                            Phone number is invalid.
+                        </span>
+                        <span *ngIf="homeAddressForm.controls['phone'].errors.minlength">
+                            Phone number is too short.
+                        </span>
+                    </span>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Street:</mat-label>
+                    <input matInput class="form-control" formControlName="street" type="text">
+                    <span
+                        *ngIf="homeAddressForm.controls['street'].invalid && (homeAddressForm.controls['street'].dirty || homeAddressForm.controls['street'].touched)"
+                        class="alert alert-danger">
+                        <span *ngIf="homeAddressForm.controls['street'].errors.required">
+                            Street is required.
+                        </span>
+                    </span>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>City:</mat-label>
+                    <input matInput class="form-control" formControlName="city" type="text">
+                    <span
+                        *ngIf="homeAddressForm.controls['city'].invalid && (homeAddressForm.controls['city'].dirty || homeAddressForm.controls['city'].touched)"
+                        class="alert alert-danger">
+                        <span *ngIf="homeAddressForm.controls['city'].errors.required">
+                            City is required.
+                        </span>
+                    </span>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Zip code:</mat-label>
+                    <input matInput class="form-control" formControlName="zip" type="text">
+                    <span
+                        *ngIf="homeAddressForm.controls['zip'].invalid && (homeAddressForm.controls['zip'].dirty || homeAddressForm.controls['zip'].touched)"
+                        class="alert alert-danger">
+                        <span *ngIf="homeAddressForm.controls['zip'].errors.required">
+                            Zip code is required.
+                        </span>
+                    </span>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Country:</mat-label>
+                    <input matInput class="form-control" formControlName="country" type="text">
+                    <span
+                        *ngIf="homeAddressForm.controls['country'].invalid && (homeAddressForm.controls['country'].dirty || homeAddressForm.controls['country'].touched)"
+                        class="alert alert-danger">
+                        <span *ngIf="homeAddressForm.controls['country'].errors.required">
+                            Country is required.
+                        </span>
+                    </span>
+                </mat-form-field>
+                <br>
+            </form>
+
+
+            <button mat-button (click)="openAddressDialog()">Add another address</button> <br>
+
+            <div *ngIf="this.otherAddresses.length > 0">
+                <h4>Other patient addresses</h4>
+                <table  mat-table [dataSource]="otherAddresses" class="mat-elevation-z2">
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef> Type </th>
+                      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="street">
+                      <th mat-header-cell *matHeaderCellDef> Street </th>
+                      <td mat-cell *matCellDef="let element"> {{element.street}} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef> City </th>
+                        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+                      </ng-container>
+                  
+                    <ng-container matColumnDef="zip">
+                      <th mat-header-cell *matHeaderCellDef> Zip </th>
+                      <td mat-cell *matCellDef="let element"> {{element.zip}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="country">
+                      <th mat-header-cell *matHeaderCellDef> Country </th>
+                      <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Actions </th>
+                        <td mat-cell *matCellDef="let element; let i = index"> 
+                            <button mat-button  (click)="deleteAddress(i)">
+                                <mat-icon>delete</mat-icon>
+                        </button> 
+                    </td>
+                      </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                  </table>
+            </div>
+            
+              
+              
+            <button mat-button (click)="submitForm()" [disabled]="patientForm.pristine || patientForm.invalid || homeAddressForm.invalid">
+                Save
+            </button>
+        </form>
+    </mat-card-content>
+</mat-card>
